@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/eslint', 'nuxtjs-naive-ui', '@nuxt/icon'],
   nitro: {
     preset: 'netlify',
+    debug: 'true',
   },
   vite: {
     plugins: [
