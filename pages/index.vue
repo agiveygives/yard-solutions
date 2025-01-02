@@ -8,23 +8,37 @@
         <p><i><strong>Licensed & Insured</strong></i></p>
       </div>
 
-      <div class="card about">
-        <h1>About Us</h1>
-        <p>Yard Solutions LLC. is a locally-owned and operated lawn care business serving the Kansas City metro area. We are dedicated to providing quality lawn care services at an affordable price.</p>
-      </div>
+      <NGrid :cols="3">
+        <NGridItem :span="2">
+          <div class="card about">
+            <h1>About Us</h1>
+            <p>Yard Solutions LLC. is a locally-owned and operated lawn care business serving the Kansas City metro area. We are dedicated to providing quality lawn care services at an affordable price.</p>
+          </div>
+        </NGridItem>
 
-      <div class="card services">
-        <h1>Services</h1>
-        <p>Yard Solutions LLC. offers a variety of services to meet your lawn care needs.</p>
-        <ul>
-          <li>Lawn Mowing</li>
-          <li>Leaf Removal</li>
-          <li>Shrub Trimming</li>
-          <li>Landscaping</li>
-          <li>Spring & Fall Clean-Up</li>
-          <li>And more!</li>
-        </ul>
-      </div>
+        <NGridItem>
+          <div />
+        </NGridItem>
+
+        <NGridItem>
+          <div />
+        </NGridItem>
+
+        <NGridItem :span="2">
+          <div class="card services">
+            <h1>Services</h1>
+            <p>Yard Solutions LLC. offers a variety of services to meet your lawn care needs.</p>
+            <ul>
+              <li>Lawn Mowing</li>
+              <li>Leaf Removal</li>
+              <li>Shrub Trimming</li>
+              <li>Landscaping</li>
+              <li>Spring & Fall Clean-Up</li>
+              <li>And more!</li>
+            </ul>
+          </div>
+        </NGridItem>
+      </NGrid>
     </div>
   </div>
 </template>
@@ -51,6 +65,6 @@
   background-color: rgba(235, 235, 235, 0.45);
   padding: 16px;
   margin: 16px;
-  border-radius: 8px;
+  border-radius: 24px;
 }
 </style>
