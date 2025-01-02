@@ -11,8 +11,8 @@
         </NuxtLink>
       </NGridItem>
       <NGridItem>
-        <NuxtLink to="/about">About</NuxtLink>
-        <NuxtLink to="/gallery">Gallery</NuxtLink>
+        <!-- <NuxtLink to="/about">About</NuxtLink>
+        <NuxtLink to="/gallery">Gallery</NuxtLink> -->
       </NGridItem>
       <NGridItem>
         <div>
@@ -33,11 +33,13 @@ nav {
   background-repeat: no-repeat;
   background-position: center;
   max-height: 100px;
-  padding: 8px;
+  padding: 8px 16px;
 }
 
 img {
   max-height: 100px;
+  pointer-events: none;
+  user-select: none;
 }
 
 .telephone-contact {

@@ -7,7 +7,7 @@
       <NuxtPage />
     </main>
     <footer>
-      <p>&copy; 2024 My Nuxt App</p>
+      <p>Made with ❤️ by Andrew Givens</p>
     </footer>
   </div>
 </template>
@@ -19,18 +19,33 @@
   --ys-green: #00b007;
 }
 
-body {
-  margin: 0;
+#app {
   font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+
+  display: grid;
+  grid:
+    "header" auto
+    "main" 1fr
+    "footer" auto / 1fr;
 }
+
+header {
+  grid-area: header;
+  box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.50);
+  z-index: 1;
+}
+
 main {
-  padding: 2rem;
+  grid-area: main;
 }
+
 footer {
+  grid-area: footer;
   background: #333;
   color: white;
   text-align: center;
   padding: 1rem;
-  margin-top: 2rem;
 }
 </style>
