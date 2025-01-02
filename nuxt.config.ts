@@ -4,6 +4,7 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 
 export default defineNuxtConfig({
+  buildDir: 'dist',
   components: true,
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
