@@ -27,6 +27,9 @@ export default defineNuxtConfig({
       })
     ]
   },
+  build: {
+    transpile: ["vueuc"],
+  },
   css: [
     '@/components/Layout/Navigation.vue'
   ]
