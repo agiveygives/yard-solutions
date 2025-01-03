@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <NGrid :cols="3">
+    <NGrid :cols="3" class="'grid-container'">
       <NGridItem>
         <NuxtLink to="/">
           <NImage
@@ -54,5 +54,18 @@ img {
 
 .phone-icon {
   height: unset;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .n-grid {
+    grid-template-columns: minmax(0px, 1fr) !important;
+    gap: 5px !important;
+    justify-items: center
+  }
+
+  nav {
+    max-height: unset;
+  }
 }
 </style>

@@ -20,7 +20,9 @@
 }
 
 #app {
-  font-family: Arial, sans-serif;
+  font-family: Inter;
+  font-weight: 300;
+  line-height: 1.5;
   overflow-x: hidden;
   width: 100%;
 

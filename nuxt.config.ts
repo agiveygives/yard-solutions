@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   components: true,
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', 'nuxtjs-naive-ui', '@nuxt/icon'],
+  modules: ['@nuxt/eslint', 'nuxtjs-naive-ui', '@nuxt/icon', '@nuxt/fonts'],
   nitro: {
     preset: 'netlify',
     debug: 'true',
