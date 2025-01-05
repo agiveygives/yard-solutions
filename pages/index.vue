@@ -11,10 +11,15 @@
 
       <NGrid :cols="3">
         <NGridItem :span="2">
-          <div class="card about">
-            <h1>About Us</h1>
-            <p>Yard Solutions LLC. is a locally-owned and operated lawn care business serving the Kansas City metro area. We are dedicated to providing quality lawn care services at an affordable price.</p>
-          </div>
+          <UCard class="card about">
+            <template #header>
+              <h1 class="text-3xl">About Us</h1>
+            </template>
+
+            <p class="text-lg">
+              Yard Solutions LLC is a locally-owned and operated lawn care business serving the Kansas City metro area. We are dedicated to providing quality lawn care services at an affordable price.
+            </p>
+          </UCard>
         </NGridItem>
 
         <NGridItem>
@@ -26,18 +31,39 @@
         </NGridItem>
 
         <NGridItem :span="2">
-          <div class="card services">
-            <h1>Services</h1>
-            <p>Yard Solutions LLC. offers a variety of services to meet your lawn care needs.</p>
+          <UCard class="card services text-lg">
+            <template #header>
+              <h1 class="text-3xl">Services</h1>
+            </template>
+
+            <p class="pb-1.5">Yard Solutions LLC offers a variety of services to meet your lawn care needs.</p>
             <ul>
-              <li>Lawn Mowing</li>
-              <li>Leaf Removal</li>
-              <li>Shrub Trimming</li>
-              <li>Landscaping</li>
-              <li>Spring & Fall Clean-Up</li>
-              <li>And more!</li>
+              <li class="li-item pb-1.5">
+                <img class="icon-img" src="/images/icons/lawnmower.png" alt="Lawn mower icon">
+                Lawn Care
+              </li>
+              <li class="li-item pb-1.5">
+                <img class="icon-img" src="/images/icons/leaf-fall.png" alt="Falling leaves icon">
+                Leaf Removal
+              </li>
+              <li class="li-item pb-1.5">
+                <img class="icon-img" src="/images/icons/bushes.png" alt="Bushes icon">
+                Shrub Trimming
+              </li>
+              <li class="li-item pb-1.5">
+                <img class="icon-img" src="/images/icons/planning.png" alt="Landscaping icon">
+                Landscaping
+              </li>
+              <li class="li-item pb-1.5">
+                <img class="icon-img" src="/images/icons/season.png" alt="Seasons icon">
+                Spring & Fall Clean-Up
+              </li>
+              <li class="li-item pb-1.5">
+                <img class="icon-img" src="/images/icons/sprout.png" alt="Sprouting plant icon">
+                And more!
+              </li>
             </ul>
-          </div>
+          </UCard>
         </NGridItem>
       </NGrid>
     </div>
@@ -46,6 +72,7 @@
 
 <style>
 .tagline {
+  pointer-events: none;
   display: grid;
   place-items: center;
   background-color: rgba(255, 255, 255, 0.45);
@@ -57,6 +84,9 @@
   max-width: 950px;
   padding: 16px;
   text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: black;
 }
 
 .uppercase {
@@ -81,5 +111,15 @@
   padding: 16px;
   margin: 16px;
   border-radius: 24px;
+}
+
+.li-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.icon-img {
+  height: 40px;
 }
 </style>

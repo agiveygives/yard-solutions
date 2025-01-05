@@ -32,7 +32,6 @@ nav {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  max-height: 100px;
   padding: 8px 16px;
 }
 

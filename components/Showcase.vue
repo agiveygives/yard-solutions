@@ -6,26 +6,34 @@
     class="carousel"
     autoplay
   >
-    <NCarouselItem v-for="image in images" :key="image">
+    <NCarouselItem v-for="image in items" :key="image">
       <img class="carousel-img" :src="image" :alt="`Image: ${image}`">
     </NCarouselItem>
   </NCarousel>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      images: [
-        '/images/gallery/showcase/9.jpg',
-        '/images/gallery/showcase/11.jpg',
-        '/images/gallery/showcase/17.jpg',
-        '/images/gallery/showcase/19.jpg',
-        '/images/gallery/showcase/20.jpg',
-      ],
-    };
-  },
-};
+<script setup lang="ts">
+  const items = [
+    '/images/gallery/showcase/9.jpg',
+    '/images/gallery/showcase/11.jpg',
+    '/images/gallery/showcase/17.jpg',
+    '/images/gallery/showcase/19.jpg',
+    '/images/gallery/showcase/20.jpg',
+  ]
+
+  const carouselRef = ref()
+
+  onMounted(() => {
+    setInterval(() => {
+      if (!carouselRef.value) return
+
+      if (carouselRef.value.page === carouselRef.value.pages) {
+        return carouselRef.value.select(0)
+      }
+
+      carouselRef.value.next()
+    }, 3000)
+  })
 </script>
 
 <style>
