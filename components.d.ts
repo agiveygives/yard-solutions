@@ -7,11 +7,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    NCarousel: typeof import('naive-ui')['NCarousel']
-    NCarouselItem: typeof import('naive-ui')['NCarouselItem']
-    NGrid: typeof import('naive-ui')['NGrid']
-    NGridItem: typeof import('naive-ui')['NGridItem']
-    NImage: typeof import('naive-ui')['NImage']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

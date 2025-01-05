@@ -9,8 +9,8 @@
         <p class="uppercase"><i><strong>Licensed & Insured</strong></i></p>
       </div>
 
-      <NGrid :cols="3">
-        <NGridItem :span="2">
+      <div class="grid-container">
+        <div class="card-grid-item">
           <UCard class="card about">
             <template #header>
               <h1 class="text-3xl">About Us</h1>
@@ -20,17 +20,17 @@
               Yard Solutions LLC is a locally-owned and operated lawn care business serving the Kansas City metro area. We are dedicated to providing quality lawn care services at an affordable price.
             </p>
           </UCard>
-        </NGridItem>
+        </div>
 
-        <NGridItem>
+        <div>
           <div />
-        </NGridItem>
+        </div>
 
-        <NGridItem>
+        <div>
           <div />
-        </NGridItem>
+        </div>
 
-        <NGridItem :span="2">
+        <div class="card-grid-item">
           <UCard class="card services text-lg">
             <template #header>
               <h1 class="text-3xl">Services</h1>
@@ -64,8 +64,8 @@
               </li>
             </ul>
           </UCard>
-        </NGridItem>
-      </NGrid>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -93,6 +93,18 @@
   text-transform: uppercase;
 }
 
+.grid-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 0px;
+  row-gap: 0px;
+}
+
+.card-grid-item {
+  grid-column: span 2 / span 2;
+}
+
 @media only screen and (max-width: 600px) {
   .tagline {
     width: 100vw;
@@ -100,6 +112,11 @@
     height: calc(100vh - 340px);
     top: 250px;
   }
+
+
+.card-grid-item {
+  grid-column: span 3 / span 3;
+}
 }
 
 .green {

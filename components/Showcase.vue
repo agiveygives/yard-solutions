@@ -1,15 +1,14 @@
 <template>
-  <NCarousel
-    direction="horizontal"
-    dot-type="line"
-    dot-placement="bottom"
-    class="carousel"
-    autoplay
+  <UCarousel
+    ref="carouselRef"
+    v-slot="{ item }"
+    :items="items"
+    :ui="{ item: 'basis-full' }"
+    class="carousel overflow-hidden"
+    indicators
   >
-    <NCarouselItem v-for="image in items" :key="image">
-      <img class="carousel-img" :src="image" :alt="`Image: ${image}`">
-    </NCarouselItem>
-  </NCarousel>
+    <img class="carousel-img w-full" :src="item" :alt="`Image: ${item}`" draggable="false">
+  </UCarousel>
 </template>
 
 <script setup lang="ts">
@@ -38,11 +37,7 @@
 
 <style>
 .carousel {
-  margin: 0 auto;
-  width: 100%;
-  max-width: 100vw;
-  height: 100vh;
-  max-height: calc(100vh - 116px);
+  height: calc(100vh - 116px);
 }
 
 .carousel-img {
@@ -50,7 +45,6 @@
   display: block;
   width: 100%;
   max-width: 100vw;
-  height: 100%;
-  max-height: 100vh !important;
+  height: 100vh;
 }
 </style>
