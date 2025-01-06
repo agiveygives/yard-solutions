@@ -1,7 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import AutoImport from 'unplugin-auto-import/vite'
-import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
-import Components from 'unplugin-vue-components/vite'
 
 export default defineNuxtConfig({
   ssr: true,
@@ -19,12 +16,9 @@ export default defineNuxtConfig({
     preset: 'netlify',
     debug: true,
   },
-  build: {
-    transpile: ["vueuc"],
-  },
-  css: [
-    '@/components/Layout/Navigation.vue'
-  ],
+  // css: [
+  //   '@/components/Layout/Navigation.vue'
+  // ],
   site: {
     // Default meta tags
     baseUrl: 'https://yardsolutionskc.com',
