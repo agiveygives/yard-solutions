@@ -25,6 +25,7 @@
   line-height: 1.5;
   overflow-x: hidden;
   width: 100%;
+  height: 100vh;
 
   display: grid;
   grid:
