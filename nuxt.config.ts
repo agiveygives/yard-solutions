@@ -43,4 +43,7 @@ export default defineNuxtConfig({
       follow: true,
     },
   },
+  image: {
+    provider: 'static', // Disables Netlify optimization
+  },
 })
