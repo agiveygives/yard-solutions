@@ -13,11 +13,12 @@
 
 <script setup lang="ts">
   const items = [
-    '/images/gallery/showcase/9.jpg',
-    '/images/gallery/showcase/11.jpg',
-    '/images/gallery/showcase/17.jpg',
-    '/images/gallery/showcase/19.jpg',
-    '/images/gallery/showcase/20.jpg',
+    'https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/showcase/1.jpg',
+    'https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/showcase/2.jpg',
+    'https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/showcase/3.jpg',
+    'https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/showcase/4.jpg',
+    'https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/showcase/5.jpg',
+    'https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/showcase/6.jpg',
   ]
 
   const carouselRef = ref()
