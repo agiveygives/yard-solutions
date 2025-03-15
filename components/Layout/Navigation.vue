@@ -69,7 +69,7 @@ img {
 
 .nav-links {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   gap: 8px;
 }
