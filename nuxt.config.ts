@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/fonts',
     '@nuxt/ui',
-    '@nuxtjs/seo'
+    '@nuxtjs/seo',
+    '@nuxt/image',
   ],
   nitro: {
     preset: 'netlify',

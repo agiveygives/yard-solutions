@@ -6,9 +6,9 @@
           <img src="/images/banner-logo.png" alt="Yard Solutions LLC. logo">
         </NuxtLink>
       </div>
-      <div>
-        <!-- <NuxtLink to="/about">About</NuxtLink>
-        <NuxtLink to="/gallery">Gallery</NuxtLink> -->
+      <div class="nav-links">
+        <!-- <NuxtLink to="/about">About</NuxtLink> -->
+        <NuxtLink to="/gallery" class="nav-link">Gallery</NuxtLink>
       </div>
       <div>
         <div>
@@ -67,6 +67,49 @@ img {
   row-gap: 0px;
 }
 
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.nav-link {
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+  padding: 0px 3px;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.nav-link::before {
+  content: '';
+  background-color: var(--ys-green);
+  position: absolute;
+  left: 0;
+  bottom: 3px;
+  width: 100%;
+  height: 8px;
+  z-index: -1;
+}
+
+.nav-link:hover::before {
+  bottom: 0;
+  height: 100%;
+}
+
+.nav-link::before {
+  content: '';
+  background-color: var(--ys-green);
+  position: absolute;
+  left: 0;
+  bottom: 3px;
+  width: 100%;
+  height: 8px;
+  z-index: -1;
+  transition: all .3s ease-in-out;
+}
 
 @media only screen and (max-width: 600px) {
   .grid-container {
