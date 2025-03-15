@@ -16,7 +16,7 @@
 /* Global styles */
 :root {
   --ys-blue: #017fb4;
-  --ys-green: #00b007;
+  --ys-green: #0e9d2d;
 }
 
 #app {
