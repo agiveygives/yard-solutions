@@ -32,7 +32,7 @@ export default {
 <template>
   <div class="p-4">
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      <NuxtImg v-for="(img, index) in images" :key="index" :src="img" alt="Gallery image" class="rounded-lg shadow-md" />
+      <NuxtImg v-for="(img, index) in images"  :key="index" :src="img" alt="Gallery image" class="rounded-lg shadow-md" :custom="true" />
     </div>
   </div>
 </template>
