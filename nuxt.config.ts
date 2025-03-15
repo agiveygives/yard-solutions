@@ -16,6 +16,24 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'netlify',
     debug: true,
+    prerender: {
+      routes: [
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/1/after/image1.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/1/after/image2.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/2/after/image13.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/2/after/image3.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/3/after/image4.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/3/after/image5.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/3/after/image6.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/3/after/image7.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/3/after/image8.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/4/after/image9.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/5/after/image10.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/5/after/image11.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/5/after/image12.jpg",
+        "https://yardsolutionskc.s3.us-east-2.amazonaws.com/job_images/5/after/image14.jpg",
+      ]
+    }
   },
   // css: [
   //   '@/components/Layout/Navigation.vue'
@@ -42,8 +60,5 @@ export default defineNuxtConfig({
       index: true,
       follow: true,
     },
-  },
-  image: {
-    provider: 'static', // Disables Netlify optimization
   },
 })
