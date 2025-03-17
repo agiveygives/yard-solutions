@@ -35,6 +35,7 @@
         variant: 'outline',
         class: 'rounded-full'
       }"
+      :fullscreen="isMobile"
       @close="closeQuoteModal"
     >
       <div class="py-4 px-6">
@@ -54,6 +55,10 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
+import { useWindowSize } from '@vueuse/core';
+
+const { width } = useWindowSize();
+const isMobile = computed(() => width.value < 600);
 
 const router = useRouter();
 const route = useRoute();
@@ -79,6 +84,15 @@ const closeQuoteModal = () => {
   router.replace({ query })
 }
 </script>
+
+<style>
+@media only screen and (max-width: 600px) {
+  [id^="headlessui-dialog-panel-v-"] {
+    min-height: 100vh;
+    height: auto;
+  }
+}
+</style>
 
 <style scoped>
 nav {

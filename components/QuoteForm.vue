@@ -146,7 +146,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     </UFormGroup>
 
     <UFormGroup v-if="stepIncluded('phoneNumber')" label="Phone Number" name="phoneNumber">
-      <UInput v-model="state.phoneNumber" @change="formatPhoneNumberInputOnChange" />
+      <UInput v-model="state.phoneNumber" inputmode="numeric" @change="formatPhoneNumberInputOnChange" />
     </UFormGroup>
 
     <UFormGroup v-if="stepIncluded('addressLine1')" label="Line 1" name="addressLine1">
@@ -167,7 +167,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </UFormGroup>
 
       <UFormGroup label="Postal Code" name="postalCode" class="state">
-        <UInput v-model="state.postalCode" />
+        <UInput v-model="state.postalCode" inputmode="numeric" />
       </UFormGroup>
     </div>
 
@@ -187,11 +187,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     <UFormGroup v-if="stepIncluded('description')" label="Images" name="images">
       <UInput type="file" accept=".jpg, .jpeg, .png" multiple @change="handleFileChange" />
-      <div v-if="imagePreviews.length" class="pt-4">
+      <UCard v-if="imagePreviews.length" class="mt-4">
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <img v-for="(preview, index) in imagePreviews" :key="index" :src="preview">
         </div>
-      </div>
+      </UCard>
     </UFormGroup>
 
     <UButton v-if="formStep > 0" @click="onBack">

@@ -11,14 +11,17 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/ui',
     '@nuxtjs/seo',
+    '@vueuse/nuxt',
   ],
   nitro: {
     preset: 'netlify',
     debug: true,
   },
-  // css: [
-  //   '@/components/Layout/Navigation.vue'
-  // ],
+  app: {
+    head: {
+      viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+    }
+  },
   site: {
     // Default meta tags
     baseUrl: 'https://yardsolutionskc.com',
