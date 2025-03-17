@@ -17,6 +17,7 @@
 :root {
   --ys-blue: #017fb4;
   --ys-green: #0e9d2d;
+  --ys-white: #fdfbff;
 }
 
 #app {
