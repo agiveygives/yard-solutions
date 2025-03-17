@@ -46,7 +46,7 @@
           </UButton>
         </div>
         <main>
-          <QuoteForm />
+          <QuoteForm @on-submit-callback="closeQuoteModal" />
         </main>
       </div>
     </UModal>
