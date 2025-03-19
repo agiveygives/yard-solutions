@@ -72,16 +72,16 @@
 
 <style>
 .tagline {
+  position: absolute;
+  top: 170px;
+  width: 40vw;
+  max-width: 950px;
+  height: calc(100vh - 215px);
   pointer-events: none;
   display: grid;
   place-items: center;
   background-color: rgba(255, 255, 255, 0.45);
-  position: absolute;
-  top: 170px;
   border-radius: 3px;
-  height: calc(100vh - 215px);
-  width: 40vw;
-  max-width: 950px;
   padding: 16px;
   text-align: center;
   font-size: 24px;

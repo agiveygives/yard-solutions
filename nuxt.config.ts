@@ -11,14 +11,17 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/ui',
     '@nuxtjs/seo',
+    '@vueuse/nuxt',
   ],
   nitro: {
     preset: 'netlify',
     debug: true,
   },
-  // css: [
-  //   '@/components/Layout/Navigation.vue'
-  // ],
+  app: {
+    head: {
+      viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+    }
+  },
   site: {
     // Default meta tags
     baseUrl: 'https://yardsolutionskc.com',
@@ -40,6 +43,15 @@ export default defineNuxtConfig({
     robots: {
       index: true,
       follow: true,
+    },
+  },
+  alias: {
+    "~/types": "/<srcDir>/types",
+  },
+  runtimeConfig: {
+    public: {
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
     },
   },
 })
