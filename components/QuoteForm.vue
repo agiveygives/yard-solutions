@@ -158,14 +158,12 @@ async function createQuote() {
   }
 }
 
-async function onSubmit(event: FormSubmitEvent<Schema>) {
+async function onSubmit(_event: FormSubmitEvent<Schema>) {
   // upload photos to s3
 
   await createQuote();
 
   // Create photo records in the database
-
-  console.log(event.data);
 
   if (props.onSubmitCallback) {
     props.onSubmitCallback();
