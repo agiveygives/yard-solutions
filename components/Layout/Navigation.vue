@@ -154,11 +154,11 @@ img {
   }
 
   .grid-container > div:nth-child(3) {
-    order: 2; /* Move the 3rd item to the 2nd position */
+    order: 2;
   }
 
   .grid-container > div:nth-child(2) {
-    order: 3; /* Move the 2nd item to the 3rd position */
+    order: 3;
   }
 
   nav {
@@ -209,11 +209,8 @@ img {
   background-size: 200% 8%;
   background-position: left bottom;
   background-repeat: no-repeat;
-  /* background-image: linear-gradient(to right, var(--ys-green) 50%, transparent 50%); */
 }
 
-/*Can't use this type of underscore for multiple lines of text :(
-Good for menu buttons though, this would use a transform animation instead of a background position animation, better performance :)*/
 .link--bottom:before {
   content: "";
   position: absolute;
