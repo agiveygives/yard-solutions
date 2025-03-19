@@ -46,7 +46,7 @@
           </UButton>
         </div>
         <main>
-          <QuoteForm @on-submit-callback="closeQuoteModal" />
+          <QuoteForm :on-submit-callback="closeQuoteModal" />
         </main>
       </div>
     </UModal>
@@ -153,6 +153,14 @@ img {
     justify-items: center
   }
 
+  .grid-container > div:nth-child(3) {
+    order: 2; /* Move the 3rd item to the 2nd position */
+  }
+
+  .grid-container > div:nth-child(2) {
+    order: 3; /* Move the 2nd item to the 3rd position */
+  }
+
   nav {
     max-height: unset;
   }
@@ -163,7 +171,7 @@ img {
   display: inline-block;
   padding: 0;
   line-height: 1em;
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 400;
   margin: 0;
   color: var(--ys-white);
@@ -262,18 +270,18 @@ Good for menu buttons though, this would use a transform animation instead of a 
 }
 
 .link:hover .request-quote--top:after {
-  transform: rotateZ(-1.8deg) scaleX(100%);
+  transform: rotateZ(-1.9deg) scaleX(100%);
 }
 
 .link:hover .request-quote--bottom:after {
-  transform: rotateZ(-2deg) scaleX(100%);
+  transform: rotateZ(-1.8deg) scaleX(100%);
 }
 
 .link:hover .gallery--top:after {
-  transform: rotateZ(-4.2deg) scaleX(100%);
+  transform: rotateZ(-4.4deg) scaleX(100%);
 }
 
 .link:hover .gallery--bottom:after {
-  transform: rotateZ(-4.6deg) scaleX(100%);
+  transform: rotateZ(-4.2deg) scaleX(100%);
 }
 </style>
