@@ -2,6 +2,15 @@
 import { object, string, date, type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
 import { isValidPhoneNumber, parsePhoneNumberFromString as parsePhoneNumber } from 'libphonenumber-js'
+import type { Database } from '~/types/database.types.ts';
+
+const props = defineProps<{
+  onSubmitCallback: () => void;
+}>();
+
+type Quote = Database['public']['Tables']['quotes']['Insert'];
+
+const { $supabase } = useNuxtApp();
 
 const form = useTemplateRef('form');
 const formSteps = [
@@ -121,9 +130,44 @@ async function onBack() {
   }
 }
 
-async function onSubmit(event: FormSubmitEvent<Schema>) {
-  // Do something with event.data
-  console.log(event.data)
+
+async function createQuote() {
+  const quoteData: Quote = {
+    address_line1: state.addressLine1,
+    address_line2: state.addressLine2,
+    city: state.city,
+    state: state.state,
+    email: state.email,
+    family_name: state.lastName,
+    given_name: state.firstName,
+    job_type: state.jobType,
+    phone_number: state.phoneNumber,
+    postal_code: state.postalCode,
+    preferred_job_date: state.preferredJobDate,
+    description: state.description,
+  }
+
+  const { data, error } = await $supabase
+    .from('quotes')
+    .insert([quoteData]);
+
+  if (error) {
+    console.error('Error inserting data:', error.message);
+  } else {
+    console.log('Quote added:', data);
+  }
+}
+
+async function onSubmit(_event: FormSubmitEvent<Schema>) {
+  // upload photos to s3
+
+  await createQuote();
+
+  // Create photo records in the database
+
+  if (props.onSubmitCallback) {
+    props.onSubmitCallback();
+  }
 }
 </script>
 

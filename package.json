@@ -17,6 +17,7 @@
     "@nuxt/icon": "^1.10.3",
     "@nuxt/ui": "^2.20.0",
     "@nuxtjs/seo": "^2.0.2",
+    "@supabase/supabase-js": "^2.49.1",
     "@vue/server-renderer": "^3.5.13",
     "@vueuse/nuxt": "^13.0.0",
     "eslint": "^9.16.0",

@@ -46,7 +46,7 @@
           </UButton>
         </div>
         <main>
-          <QuoteForm />
+          <QuoteForm :on-submit-callback="closeQuoteModal" />
         </main>
       </div>
     </UModal>
@@ -153,6 +153,14 @@ img {
     justify-items: center
   }
 
+  .grid-container > div:nth-child(3) {
+    order: 2;
+  }
+
+  .grid-container > div:nth-child(2) {
+    order: 3;
+  }
+
   nav {
     max-height: unset;
   }
@@ -163,7 +171,7 @@ img {
   display: inline-block;
   padding: 0;
   line-height: 1em;
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 400;
   margin: 0;
   color: var(--ys-white);
@@ -201,11 +209,8 @@ img {
   background-size: 200% 8%;
   background-position: left bottom;
   background-repeat: no-repeat;
-  /* background-image: linear-gradient(to right, var(--ys-green) 50%, transparent 50%); */
 }
 
-/*Can't use this type of underscore for multiple lines of text :(
-Good for menu buttons though, this would use a transform animation instead of a background position animation, better performance :)*/
 .link--bottom:before {
   content: "";
   position: absolute;
@@ -262,18 +267,18 @@ Good for menu buttons though, this would use a transform animation instead of a 
 }
 
 .link:hover .request-quote--top:after {
-  transform: rotateZ(-1.8deg) scaleX(100%);
+  transform: rotateZ(-1.9deg) scaleX(100%);
 }
 
 .link:hover .request-quote--bottom:after {
-  transform: rotateZ(-2deg) scaleX(100%);
+  transform: rotateZ(-1.8deg) scaleX(100%);
 }
 
 .link:hover .gallery--top:after {
-  transform: rotateZ(-4.2deg) scaleX(100%);
+  transform: rotateZ(-4.4deg) scaleX(100%);
 }
 
 .link:hover .gallery--bottom:after {
-  transform: rotateZ(-4.6deg) scaleX(100%);
+  transform: rotateZ(-4.2deg) scaleX(100%);
 }
 </style>
