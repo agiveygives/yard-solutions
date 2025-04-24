@@ -8,7 +8,10 @@
     "dev:host": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "supabase:login": "npx supabase login",
+    "supabase:init": "npx supabase init",
+    "supabase:types": "npx supabase gen types typescript --project-id \"gnjedvmcwioqvjkzuwwb\" --schema public > types/database.types.ts"
   },
   "dependencies": {
     "@iconify-json/solar": "^1.2.2",
@@ -17,7 +20,7 @@
     "@nuxt/icon": "^1.10.3",
     "@nuxt/ui": "^2.20.0",
     "@nuxtjs/seo": "^2.0.2",
-    "@supabase/supabase-js": "^2.49.1",
+    "@supabase/supabase-js": "^2.49.4",
     "@vue/server-renderer": "^3.5.13",
     "@vueuse/nuxt": "^13.0.0",
     "eslint": "^9.16.0",
@@ -31,5 +34,8 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.28.1"
+  },
+  "devDependencies": {
+    "supabase": "^2.22.4"
   }
 }

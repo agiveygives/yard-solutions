@@ -10,8 +10,6 @@ const props = defineProps<{
 
 type Quote = Database['public']['Tables']['quotes']['Insert'];
 
-const { $supabase } = useNuxtApp();
-
 const form = useTemplateRef('form');
 const formSteps = [
   { title: 'Contact Information' , fields: ['firstName', 'lastName', 'email', 'phoneNumber'] },
@@ -53,13 +51,16 @@ const formatPhoneNumber = (value: string): string => {
   return phoneNumber ? phoneNumber.formatNational() : value
 }
 
+const imageFiles = ref<File[]>([]);
 const imagePreviews = ref<string[]>([]);
 const handleFileChange = (files: FileList) => {
   if (!files) return;
 
   imagePreviews.value = [];
+  imageFiles.value = [];
   Array.from(files).forEach((file) => {
     if (file.type.startsWith('image/')) {
+      imageFiles.value.push(file);
       const reader = new FileReader();
       reader.onload = (e) => {
         if (!e.target) return;
@@ -93,7 +94,7 @@ const schema = object({
 
 type Schema = InferType<typeof schema>
 
-const state = reactive({
+const formState = reactive({
   firstName: '',
   lastName: '',
   email: '',
@@ -107,9 +108,13 @@ const state = reactive({
   description: '',
   preferredJobDate: '',
 })
+const state = reactive<{ submitting: boolean, error: string | null }>({
+  submitting: false,
+  error: null,
+})
 
 const formatPhoneNumberInputOnChange = () => {
-  state.phoneNumber = formatPhoneNumber(state.phoneNumber)
+  formState.phoneNumber = formatPhoneNumber(formState.phoneNumber)
 }
 
 async function onNext() {
@@ -130,103 +135,153 @@ async function onBack() {
   }
 }
 
-
-async function createQuote() {
+async function createQuote(): Promise<{ success: boolean, data: Quote | null }> {
   const quoteData: Quote = {
-    address_line1: state.addressLine1,
-    address_line2: state.addressLine2,
-    city: state.city,
-    state: state.state,
-    email: state.email,
-    family_name: state.lastName,
-    given_name: state.firstName,
-    job_type: state.jobType,
-    phone_number: state.phoneNumber,
-    postal_code: state.postalCode,
-    preferred_job_date: state.preferredJobDate,
-    description: state.description,
+    address_line1: formState.addressLine1,
+    address_line2: formState.addressLine2,
+    city: formState.city,
+    state: formState.state,
+    email: formState.email,
+    family_name: formState.lastName,
+    given_name: formState.firstName,
+    job_type: formState.jobType,
+    phone_number: formState.phoneNumber,
+    postal_code: formState.postalCode,
+    preferred_job_date: formState.preferredJobDate,
+    description: formState.description,
   }
 
-  const { data, error } = await $supabase
-    .from('quotes')
-    .insert([quoteData]);
+  try {
+    const response = await fetch('/api/quotes', {
+      method: 'POST',
+      body: JSON.stringify(quoteData)
+    })
 
-  if (error) {
-    console.error('Error inserting data:', error.message);
-  } else {
-    console.log('Quote added:', data);
+    if (!response.ok) {
+      throw new Error('Failed to create quote')
+    }
+
+    const { data } = await response.json()
+    console.log('Quote added:', data)
+
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error creating quote:', error)
+    return { success: false, data: null }
+  }
+}
+
+async function uploadImages(quoteId: string): Promise<boolean> {
+  if (imageFiles.value.length === 0) return true;
+
+  const formData = new FormData();
+  imageFiles.value.forEach(file => {
+    formData.append('files', file);
+  });
+
+  try {
+    const response = await fetch(`/api/quotes/${quoteId}/images`, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to upload images');
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error uploading images:', error);
+    return false;
   }
 }
 
 async function onSubmit(_event: FormSubmitEvent<Schema>) {
-  // upload photos to s3
+  state.submitting = true;
+  state.error = null;
 
-  await createQuote();
+  try {
+    const { success, data } = await createQuote();
 
-  // Create photo records in the database
+    if (success && data?.id) {
+      // Upload images if any were selected
+      if (imageFiles.value.length > 0) {
+        const uploadSuccess = await uploadImages(data.id);
+        if (!uploadSuccess) {
+          state.error = 'Quote created but failed to upload images';
+        }
+      }
 
-  if (props.onSubmitCallback) {
-    props.onSubmitCallback();
+      if (props.onSubmitCallback) {
+        props.onSubmitCallback();
+      }
+    } else {
+      state.error = 'Failed to create quote';
+    }
+  } catch (error) {
+    state.error = error instanceof Error ? error.message : 'An unexpected error occurred';
+  } finally {
+    state.submitting = false;
   }
 }
 </script>
 
 <template>
-  <UForm ref="form" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+  <UForm ref="form" :schema="schema" :state="formState" class="space-y-4" @submit="onSubmit">
     <h3>{{ formSteps[formStep].title }}</h3>
 
     <div v-if="stepIncluded(['firstName', 'lastName'])" class="input-row">
       <UFormGroup label="First Name" name="firstName">
-        <UInput v-model="state.firstName" />
+        <UInput v-model="formState.firstName" />
       </UFormGroup>
 
       <UFormGroup label="Last Name" name="lastName">
-        <UInput v-model="state.lastName" />
+        <UInput v-model="formState.lastName" />
       </UFormGroup>
     </div>
 
     <UFormGroup v-if="stepIncluded('email')" label="Email" name="email">
-      <UInput v-model="state.email" />
+      <UInput v-model="formState.email" />
     </UFormGroup>
 
     <UFormGroup v-if="stepIncluded('phoneNumber')" label="Phone Number" name="phoneNumber">
-      <UInput v-model="state.phoneNumber" inputmode="numeric" @change="formatPhoneNumberInputOnChange" />
+      <UInput v-model="formState.phoneNumber" inputmode="numeric" @change="formatPhoneNumberInputOnChange" />
     </UFormGroup>
 
     <UFormGroup v-if="stepIncluded('addressLine1')" label="Line 1" name="addressLine1">
-      <UInput v-model="state.addressLine1" />
+      <UInput v-model="formState.addressLine1" />
     </UFormGroup>
 
     <UFormGroup v-if="stepIncluded('addressLine2')" label="Line 2" name="addressLine2">
-      <UInput v-model="state.addressLine2" />
+      <UInput v-model="formState.addressLine2" />
     </UFormGroup>
 
     <div v-if="stepIncluded(['city', 'state', 'postalCode'])" class="input-row">
       <UFormGroup label="City" name="city">
-        <UInput v-model="state.city"/>
+        <UInput v-model="formState.city"/>
       </UFormGroup>
 
       <UFormGroup label="State" name="state" class="state">
-        <USelect v-model="state.state" :options="states" />
+        <USelect v-model="formState.state" :options="states" />
       </UFormGroup>
 
       <UFormGroup label="Postal Code" name="postalCode" class="state">
-        <UInput v-model="state.postalCode" inputmode="numeric" />
+        <UInput v-model="formState.postalCode" inputmode="numeric" />
       </UFormGroup>
     </div>
 
     <div v-if="stepIncluded(['jobType', 'preferredJobDate'])" class="input-row">
       <UFormGroup label="Job Type" name="jobType">
-        <USelect v-model="state.jobType" :options="jobTypes" />
+        <USelect v-model="formState.jobType" :options="jobTypes" />
       </UFormGroup>
 
       <UFormGroup label="Preferred Job Date" name="preferredJobDate">
-        <UInput v-model="state.preferredJobDate" type="date" />
+        <UInput v-model="formState.preferredJobDate" type="date" />
       </UFormGroup>
     </div>
 
     <UFormGroup v-if="stepIncluded('description')" label="Description" name="description">
-      <UTextarea v-model="state.description" resize />
+      <UTextarea v-model="formState.description" resize />
     </UFormGroup>
 
     <UFormGroup v-if="stepIncluded('description')" label="Images" name="images">
@@ -238,13 +293,13 @@ async function onSubmit(_event: FormSubmitEvent<Schema>) {
       </UCard>
     </UFormGroup>
 
-    <UButton v-if="formStep > 0" @click="onBack">
+    <UButton v-if="formStep > 0" :disabled="state.submitting" @click="onBack">
       Back
     </UButton>
     <UButton v-if="formStep >= 0 && formStep < formSteps.length - 1" class="float-right" @click="onNext">
       Next
     </UButton>
-    <UButton v-if="formStep === formSteps.length - 1" class="float-right"  type="submit">
+    <UButton v-if="formStep === formSteps.length - 1" class="float-right" type="submit" :loading="state.submitting">
       Submit
     </UButton>
   </UForm>

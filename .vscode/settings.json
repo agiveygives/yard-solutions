@@ -7,11 +7,10 @@
     "mingcute",
     "Nuxt",
     "nuxtjs",
-    "unplugin"
+    "unplugin",
+    "vuefire"
   ],
-  "deno.enablePaths": [
-    "supabase/functions"
-  ],
+  "deno.enablePaths": [],
   "deno.lint": true,
   "deno.unstable": [
     "bare-node-builtins",
