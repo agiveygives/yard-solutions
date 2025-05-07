@@ -17,6 +17,7 @@
 :root {
   --ys-blue: #017fb4;
   --ys-green: #0e9d2d;
+  --ys-white: #fdfbff;
 }
 
 #app {
@@ -25,6 +26,7 @@
   line-height: 1.5;
   overflow-x: hidden;
   width: 100%;
+  min-height: 100vh;
 
   display: grid;
   grid:

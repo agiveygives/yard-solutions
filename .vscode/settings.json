@@ -1,9 +1,32 @@
 {
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
   "cSpell.words": [
+    "brevo",
+    "getbrevo",
     "iconify",
     "mingcute",
     "Nuxt",
     "nuxtjs",
-    "unplugin"
+    "unplugin",
+    "vuefire"
+  ],
+  "deno.enablePaths": [],
+  "deno.lint": true,
+  "deno.unstable": [
+    "bare-node-builtins",
+    "byonm",
+    "sloppy-imports",
+    "unsafe-proto",
+    "webgpu",
+    "broadcast-channel",
+    "worker-options",
+    "cron",
+    "kv",
+    "ffi",
+    "fs",
+    "http",
+    "net"
   ]
 }
