@@ -3,6 +3,8 @@
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
   "cSpell.words": [
+    "brevo",
+    "getbrevo",
     "iconify",
     "mingcute",
     "Nuxt",

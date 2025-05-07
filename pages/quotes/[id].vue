@@ -10,7 +10,7 @@
 
     <div v-if="!validated">
       <UForm ref="form" :schema="schema" :state="formState" class="space-y-4" @submit="validateQuote">
-        <h1 class="text-2xl font-bold mb-1 flex justify-center">Entry the email associated to the quote</h1>
+        <h1 class="text-2xl font-bold mb-1 flex justify-center">Enter the email associated with the quote</h1>
         <div class="flex flex-direction-horizontal gap-4 items-end justify-center">
           <UFormGroup label="Email" name="email" class="flex-grow-1">
             <UInput v-model="formState.email" />
@@ -38,9 +38,6 @@
               </h1>
               <p>Job Type: {{ formatJobType(quote.job_type) }}</p>
             </div>
-            <UBadge :color="getStatusColor(quote)" size="lg">
-              {{ getStatusText(quote) }}
-            </UBadge>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -93,6 +90,8 @@
 <script setup lang="ts">
 import { object, string } from 'yup'
 import type { Database } from '~/types/database.types'
+import formatDate from '~/utils/formatDate';
+import formatJobType from '~/utils/formatJobType';
 
 type Quote = Database['public']['Tables']['quotes']['Row']
 
@@ -107,46 +106,6 @@ const error = ref<string | null>(null)
 const formState = reactive({ email: '' });
 
 const schema = object({ email: string().email('Invalid email').required('Required') })
-
-const jobTypes = {
-  'lawn-care': 'Lawn Care',
-  'landscaping': 'Landscaping',
-  'snow-removal': 'Snow Removal',
-  'leaf-removal': 'Leaf Removal'
-}
-
-function formatJobType(type: string): string {
-  return jobTypes[type as keyof typeof jobTypes] || type
-}
-
-function formatDate(date: string | null): string {
-  if (!date) return 'Not specified'
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
-
-function getStatusColor(quote: Quote): 'red' | 'yellow' | 'green' {
-  if (quote.expiration_date && new Date(quote.expiration_date) < new Date()) {
-    return 'red'
-  }
-  if (quote.quote_amount) {
-    return 'green'
-  }
-  return 'yellow'
-}
-
-function getStatusText(quote: Quote): string {
-  if (quote.expiration_date && new Date(quote.expiration_date) < new Date()) {
-    return 'Expired'
-  }
-  if (quote.quote_amount) {
-    return 'Quoted'
-  }
-  return 'Pending'
-}
 
 async function fetchQuote() {
   try {

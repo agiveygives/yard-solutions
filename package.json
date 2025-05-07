@@ -14,6 +14,7 @@
     "supabase:types": "npx supabase gen types typescript --project-id \"gnjedvmcwioqvjkzuwwb\" --schema public > types/database.types.ts"
   },
   "dependencies": {
+    "@getbrevo/brevo": "^2.2.0",
     "@iconify-json/solar": "^1.2.2",
     "@nuxt/eslint": "^0.7.2",
     "@nuxt/fonts": "^0.10.3",

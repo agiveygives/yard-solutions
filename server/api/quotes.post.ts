@@ -1,4 +1,6 @@
 import { serverSupabaseClient } from '../utils/supabase'
+import { sendQuoteEmail } from '../utils/brevo/sendQuoteEmail';
+import { formatJobType } from '../../utils/formatJobType';
 
 export default eventHandler(async (event) => {
   try {
@@ -38,6 +40,14 @@ export default eventHandler(async (event) => {
         message: error.message,
       }
     }
+
+    await sendQuoteEmail(
+      quoteData.email,
+      `${quoteData.given_name} ${quoteData.family_name}`,
+      formatJobType(quoteData.job_type).toLowerCase(),
+      `${process.env.HOST || "https://yardsolutionskc.com"}/quotes/${data[0].id}`,
+      quoteData.phone_number,
+    )
 
     return { data: data[0] }
   } catch (e) {
