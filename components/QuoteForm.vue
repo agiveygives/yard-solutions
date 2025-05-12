@@ -2,6 +2,7 @@
 import { object, string, date, type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
 import { isValidPhoneNumber, parsePhoneNumberFromString as parsePhoneNumber } from 'libphonenumber-js'
+import Compressor from 'compressorjs'
 import type { Database } from '~/types/database.types.ts';
 
 const props = defineProps<{
@@ -174,11 +175,27 @@ async function uploadImages(quoteId: string): Promise<boolean> {
   if (imageFiles.value.length === 0) return true;
 
   const formData = new FormData();
-  imageFiles.value.forEach(file => {
-    formData.append('files', file);
+  // Compress and append each image to formData
+  const compressPromises = imageFiles.value.map((file) => {
+    return new Promise<void>((resolve, reject) => {
+      new Compressor(file, {
+        quality: 0.6,
+        maxWidth: 800,
+        maxHeight: 800,
+        success(result) {
+          formData.append('files', result);
+          resolve();
+        },
+        error(err) {
+          reject(err);
+        }
+      });
+    });
   });
 
   try {
+    await Promise.all(compressPromises);
+
     const response = await fetch(`/api/quotes/${quoteId}/images`, {
       method: 'POST',
       body: formData

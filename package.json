@@ -24,6 +24,7 @@
     "@supabase/supabase-js": "^2.49.4",
     "@vue/server-renderer": "^3.5.13",
     "@vueuse/nuxt": "^13.0.0",
+    "compressorjs": "^1.2.1",
     "eslint": "^9.16.0",
     "libphonenumber-js": "^1.11.18",
     "nuxt": "^3.14.1592",
