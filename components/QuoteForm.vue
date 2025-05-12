@@ -3,11 +3,14 @@ import { object, string, date, type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
 import { isValidPhoneNumber, parsePhoneNumberFromString as parsePhoneNumber } from 'libphonenumber-js'
 import Compressor from 'compressorjs'
+
 import type { Database } from '~/types/database.types.ts';
 
 const props = defineProps<{
   onSubmitCallback: () => void;
 }>();
+
+const toast = useToast();
 
 type Quote = Database['public']['Tables']['quotes']['Insert'];
 
@@ -177,6 +180,13 @@ async function uploadImages(quoteId: string): Promise<boolean> {
 
   if (imageFiles.value.length === 0) return true;
 
+  toast.add({
+    title: `Uploading ${imageFiles.value.length} image${imageFiles.value.length > 1 ? 's' : ''}...`,
+    color: 'info',
+    icon: 'i-solar-upload-bold'
+  })
+
+
   // Compress and prepare the images
   const compressedImages = await Promise.all(
     imageFiles.value.map((file) =>
@@ -267,12 +277,39 @@ async function onSubmit(_event: FormSubmitEvent<Schema>) {
     const { success, data } = await createQuote();
 
     if (success && data?.id) {
+      toast.add({
+        title: "Successfully submitted your quote request!",
+        color: 'success',
+        icon: 'i-solar-check-circle-bold'
+      })
+
       // Upload images if any were selected
       if (imageFiles.value.length > 0) {
-        const uploadSuccess = await uploadImages(data.id);
-        if (!uploadSuccess) {
-          state.error = 'Quote created but failed to upload images';
-        }
+        uploadImages(data.id)
+          .then((response) => {
+            if(response) {
+              toast.add({
+                title: "Successfully uploaded quote images!",
+                color: 'success',
+                icon: 'i-solar-check-circle-bold'
+              })
+            } else {
+              toast.add({
+                title: "Failed to upload quote images.",
+                description: "We're on it! In the meantime, please reply to our email with your pictures.",
+                color: 'error',
+                icon: 'i-solar-folder-error-bold'
+              })
+            }
+          })
+          .catch(() => {
+            toast.add({
+              title: "Failed to upload quote images.",
+              description: "We're on it! In the meantime, please reply to our email with your pictures.",
+              color: 'error',
+              icon: 'i-solar-folder-error-bold'
+            })
+          })
       }
 
       if (props.onSubmitCallback) {
