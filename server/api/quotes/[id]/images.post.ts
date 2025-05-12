@@ -1,6 +1,7 @@
 import { serverSupabaseClient } from '../../../utils/supabase'
+import { withLogging } from '../../../utils/withLogging';
 
-export default eventHandler(async (event) => {
+export default eventHandler(withLogging(async (event) => {
   try {
     const id = getRouterParam(event, 'id')
 
@@ -47,7 +48,7 @@ export default eventHandler(async (event) => {
 
       // Generate a unique filename
       const timestamp = Date.now()
-      const extension = file.name.split('.').pop()
+      const extension = file.type.split('/').pop()
       const filename = `${timestamp}.${extension}`
 
       // Upload to Supabase Storage
@@ -99,4 +100,4 @@ export default eventHandler(async (event) => {
       message: e instanceof Error ? e.message : 'Unknown error during upload'
     }
   }
-})
+}));

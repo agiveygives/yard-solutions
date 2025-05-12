@@ -1,8 +1,9 @@
 import { serverSupabaseClient } from '../utils/supabase'
 import { sendQuoteEmail } from '../utils/brevo/sendQuoteEmail';
+import { withLogging } from '../utils/withLogging';
 import { formatJobType } from '../../utils/formatJobType';
 
-export default eventHandler(async (event) => {
+export default eventHandler(withLogging(async (event) => {
   try {
     const body = await readBody(event)
 
@@ -59,4 +60,4 @@ export default eventHandler(async (event) => {
       message: e instanceof Error ? e.message : 'Unknown error during insert'
     }
   }
-})
+}));

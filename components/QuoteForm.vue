@@ -2,11 +2,15 @@
 import { object, string, date, type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
 import { isValidPhoneNumber, parsePhoneNumberFromString as parsePhoneNumber } from 'libphonenumber-js'
+import Compressor from 'compressorjs'
+
 import type { Database } from '~/types/database.types.ts';
 
 const props = defineProps<{
   onSubmitCallback: () => void;
 }>();
+
+const toast = useToast();
 
 type Quote = Database['public']['Tables']['quotes']['Insert'];
 
@@ -162,7 +166,6 @@ async function createQuote(): Promise<{ success: boolean, data: Quote | null }> 
     }
 
     const { data } = await response.json()
-    console.log('Quote added:', data)
 
     return { success: true, data }
   } catch (error) {
@@ -172,28 +175,98 @@ async function createQuote(): Promise<{ success: boolean, data: Quote | null }> 
 }
 
 async function uploadImages(quoteId: string): Promise<boolean> {
+  // Netlify server functions allow a max request size of 1MB
+  const MAX_FORM_DATA_SIZE = 1 * 1024 * 1024; // 1MB
+
   if (imageFiles.value.length === 0) return true;
 
-  const formData = new FormData();
-  imageFiles.value.forEach(file => {
-    formData.append('files', file);
-  });
+  toast.add({
+    title: `Uploading ${imageFiles.value.length} image${imageFiles.value.length > 1 ? 's' : ''}...`,
+    color: 'info',
+    icon: 'i-solar-upload-bold'
+  })
 
-  try {
-    const response = await fetch(`/api/quotes/${quoteId}/images`, {
-      method: 'POST',
-      body: formData
+
+  // Compress and prepare the images
+  const compressedImages = await Promise.all(
+    imageFiles.value.map((file) =>
+      new Promise<File>((resolve, reject) => {
+        new Compressor(file, {
+          quality: 0.6,
+          maxWidth: 800,
+          maxHeight: 800,
+          success(result) {
+            let compressedFile: File;
+            if(result instanceof Blob) {
+              compressedFile = new File([result], file.name, {
+                type: result.type,
+                lastModified: Date.now()
+              });
+            } else {
+              compressedFile = result;
+            }
+
+            resolve(compressedFile);
+          },
+          error(err) {
+            reject(err);
+          }
+        });
+      })
+    )
+  );
+
+  const sendImageBatch = async (batch: File[]): Promise<boolean> => {
+    const formData = new FormData();
+    batch.forEach(file => {
+      formData.append('files', file);
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to upload images');
-    }
+    try {
+      const response = await fetch(`/api/quotes/${quoteId}/images`, {
+        method: 'POST',
+        body: formData
+      });
 
-    return true;
-  } catch (error) {
-    console.error('Error uploading images:', error);
-    return false;
+      if (!response.ok) {
+        throw new Error('Failed to upload images');
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      return false;
+    }
+  };
+
+  let batch: File[] = [];
+  let totalSize = 0;
+
+  for (let i = 0; i < compressedImages.length; i++) {
+    const file = compressedImages[i];
+    totalSize += file.size;
+
+    if (totalSize > MAX_FORM_DATA_SIZE) {
+      const success = await sendImageBatch(batch);
+      if (!success) {
+        return false;
+      }
+
+      batch = [file];
+      totalSize = file.size;
+    } else {
+      batch.push(file);
+    }
   }
+
+  if (batch.length > 0) {
+    const success = await sendImageBatch(batch);
+    if (!success) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 async function onSubmit(_event: FormSubmitEvent<Schema>) {
@@ -204,12 +277,39 @@ async function onSubmit(_event: FormSubmitEvent<Schema>) {
     const { success, data } = await createQuote();
 
     if (success && data?.id) {
+      toast.add({
+        title: "Successfully submitted your quote request!",
+        color: 'success',
+        icon: 'i-solar-check-circle-bold'
+      })
+
       // Upload images if any were selected
       if (imageFiles.value.length > 0) {
-        const uploadSuccess = await uploadImages(data.id);
-        if (!uploadSuccess) {
-          state.error = 'Quote created but failed to upload images';
-        }
+        uploadImages(data.id)
+          .then((response) => {
+            if(response) {
+              toast.add({
+                title: "Successfully uploaded quote images!",
+                color: 'success',
+                icon: 'i-solar-check-circle-bold'
+              })
+            } else {
+              toast.add({
+                title: "Failed to upload quote images.",
+                description: "We're on it! In the meantime, please reply to our email with your pictures.",
+                color: 'error',
+                icon: 'i-solar-folder-error-bold'
+              })
+            }
+          })
+          .catch(() => {
+            toast.add({
+              title: "Failed to upload quote images.",
+              description: "We're on it! In the meantime, please reply to our email with your pictures.",
+              color: 'error',
+              icon: 'i-solar-folder-error-bold'
+            })
+          })
       }
 
       if (props.onSubmitCallback) {

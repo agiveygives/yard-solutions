@@ -1,15 +1,18 @@
 <template>
-  <div id="app">
-    <header>
-      <LayoutNavigation />
-    </header>
-    <main>
-      <NuxtPage />
-    </main>
-    <footer>
-      <p>Made with ❤️ by Andrew Givens</p>
-    </footer>
-  </div>
+  <UApp :toaster="{ position: 'bottom-center' }">
+    <div id="app">
+      <UNotifications />
+      <header>
+        <LayoutNavigation />
+      </header>
+      <main>
+          <NuxtPage />
+      </main>
+      <footer>
+        <p>Made with ❤️ by Andrew Givens</p>
+      </footer>
+    </div>
+  </UApp>
 </template>
 
 <style>
