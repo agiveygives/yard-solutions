@@ -1,6 +1,7 @@
-import { serverSupabaseClient } from '../../utils/supabase'
+import { serverSupabaseClient } from '~/server/utils/supabase';
+import { withLogging } from '~/server/utils/withLogging';
 
-export default eventHandler(async (event) => {
+export default eventHandler(withLogging(async (event) => {
   try {
     const id = getRouterParam(event, 'id')
 
@@ -60,4 +61,4 @@ export default eventHandler(async (event) => {
       message: e instanceof Error ? e.message : 'Unknown error during fetch'
     }
   }
-})
+}))

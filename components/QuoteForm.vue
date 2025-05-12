@@ -162,7 +162,6 @@ async function createQuote(): Promise<{ success: boolean, data: Quote | null }> 
     }
 
     const { data } = await response.json()
-    console.log('Quote added:', data)
 
     return { success: true, data }
   } catch (error) {
