@@ -172,44 +172,91 @@ async function createQuote(): Promise<{ success: boolean, data: Quote | null }> 
 }
 
 async function uploadImages(quoteId: string): Promise<boolean> {
+  // Netlify server functions allow a max request size of 1MB
+  const MAX_FORM_DATA_SIZE = 1 * 1024 * 1024; // 1MB
+
   if (imageFiles.value.length === 0) return true;
 
-  const formData = new FormData();
-  // Compress and append each image to formData
-  const compressPromises = imageFiles.value.map((file) => {
-    return new Promise<void>((resolve, reject) => {
-      new Compressor(file, {
-        quality: 0.6,
-        maxWidth: 800,
-        maxHeight: 800,
-        success(result) {
-          formData.append('files', result);
-          resolve();
-        },
-        error(err) {
-          reject(err);
-        }
+  // Compress and prepare the images
+  const compressedImages = await Promise.all(
+    imageFiles.value.map((file) =>
+      new Promise<File>((resolve, reject) => {
+        new Compressor(file, {
+          quality: 0.6,
+          maxWidth: 800,
+          maxHeight: 800,
+          success(result) {
+            let compressedFile: File;
+            if(result instanceof Blob) {
+              compressedFile = new File([result], file.name, {
+                type: result.type,
+                lastModified: Date.now()
+              });
+            } else {
+              compressedFile = result;
+            }
+
+            resolve(compressedFile);
+          },
+          error(err) {
+            reject(err);
+          }
+        });
+      })
+    )
+  );
+
+  const sendImageBatch = async (batch: File[]): Promise<boolean> => {
+    const formData = new FormData();
+    batch.forEach(file => {
+      formData.append('files', file);
+    });
+
+    try {
+      const response = await fetch(`/api/quotes/${quoteId}/images`, {
+        method: 'POST',
+        body: formData
       });
-    });
-  });
 
-  try {
-    await Promise.all(compressPromises);
+      if (!response.ok) {
+        throw new Error('Failed to upload images');
+      }
 
-    const response = await fetch(`/api/quotes/${quoteId}/images`, {
-      method: 'POST',
-      body: formData
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to upload images');
+      return true;
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      return false;
     }
+  };
 
-    return true;
-  } catch (error) {
-    console.error('Error uploading images:', error);
-    return false;
+  let batch: File[] = [];
+  let totalSize = 0;
+
+  for (let i = 0; i < compressedImages.length; i++) {
+    const file = compressedImages[i];
+    totalSize += file.size;
+
+    if (totalSize > MAX_FORM_DATA_SIZE) {
+      const success = await sendImageBatch(batch);
+      if (!success) {
+        return false;
+      }
+
+      batch = [file];
+      totalSize = file.size;
+    } else {
+      batch.push(file);
+    }
   }
+
+  if (batch.length > 0) {
+    const success = await sendImageBatch(batch);
+    if (!success) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 async function onSubmit(_event: FormSubmitEvent<Schema>) {
