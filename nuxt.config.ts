@@ -46,8 +46,6 @@ export default defineNuxtConfig({
     },
   },
   alias: {
-    "~/emails": "/<srcDir>/emails",
-    "~/server": "/<srcDir>/server",
     "~/types": "/<srcDir>/types",
     "~/utils": "/<srcDir>/utils"
   },

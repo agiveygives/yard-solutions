@@ -1,7 +1,7 @@
-import { serverSupabaseClient } from '~/server/utils/supabase'
-import { sendQuoteEmail } from '~/server/utils/brevo/sendQuoteEmail';
-import { withLogging } from '~/server/utils/withLogging';
-import { formatJobType } from '~/utils/formatJobType';
+import { serverSupabaseClient } from '../utils/supabase'
+import { sendQuoteEmail } from '../utils/brevo/sendQuoteEmail';
+import { withLogging } from '../utils/withLogging';
+import { formatJobType } from '../../utils/formatJobType';
 
 export default eventHandler(withLogging(async (event) => {
   try {

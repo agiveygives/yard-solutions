@@ -1,5 +1,5 @@
-import { serverSupabaseClient } from '~/server/utils/supabase'
-import { withLogging } from '~/server/utils/withLogging';
+import { serverSupabaseClient } from '../../../utils/supabase'
+import { withLogging } from '../../../utils/withLogging';
 
 export default eventHandler(withLogging(async (event) => {
   try {
