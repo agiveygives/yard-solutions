@@ -60,4 +60,4 @@ export default eventHandler(withLogging(async (event) => {
       message: e instanceof Error ? e.message : 'Unknown error during insert'
     }
   }
-}))
+}));
