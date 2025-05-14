@@ -10,6 +10,8 @@
       </main>
       <footer>
         <p>Made with ❤️ by Andrew Givens</p>
+        <br>
+        <ULink to="/privacy_policy.html" target="_blank">Privacy Policy</ULink>
       </footer>
     </div>
   </UApp>
